@@ -11,9 +11,9 @@ class TasksScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(
               40,
-              80,
+              50,
               40,
-              45,
+              25,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,20 +21,20 @@ class TasksScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.lightBlueAccent,
-                  radius: 30,
+                  radius: 25,
                   child: Icon(
                     Icons.list,
-                    size: 42,
+                    size: 35,
                   ),
                 ),
                 SizedBox(
-                  height: 14,
+                  height: 12,
                 ),
                 Text(
                   'Todoey',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
