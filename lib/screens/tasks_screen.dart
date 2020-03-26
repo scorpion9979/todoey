@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+const tasks = [
+  {'title': 'Buy milk', 'isDone': false},
+  {'title': 'Buy eggs', 'isDone': false},
+  {'title': 'Buy bread', 'isDone': true}
+];
+
 class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,6 +61,29 @@ class TasksScreen extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25),
+                child: ListView(
+                  children: tasks
+                      .map((task) => ListTile(
+                            title: Text(
+                              task['title'],
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                                decoration: task['isDone']
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                              ),
+                            ),
+                            trailing: Checkbox(
+                              value: task['isDone'],
+                              onChanged: (newVal) => print(newVal),
+                            ),
+                          ))
+                      .toList(),
                 ),
               ),
             ),
