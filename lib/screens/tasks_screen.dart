@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
-const tasks = [
-  {'title': 'Buy milk'},
-  {'title': 'Buy eggs'},
-  {'title': 'Buy bread'}
-];
+import 'package:todoey/modules/task.dart';
+import 'package:todoey/widgets/task_tile.dart';
+import 'package:todoey/screens/add_task_screen.dart';
 
 class TasksScreen extends StatelessWidget {
   @override
@@ -65,13 +62,7 @@ class TasksScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
-                child: ListView(
-                  children: tasks
-                      .map((task) => TaskTile(
-                            title: task['title'],
-                          ))
-                      .toList(),
-                ),
+                child: TasksList(),
               ),
             ),
           ),
@@ -87,105 +78,35 @@ class TasksScreen extends StatelessWidget {
           showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              builder: (context) => SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: Container(
-                        color: Color(0xff757575),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 20,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Text(
-                                  'Add Task',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.lightBlueAccent,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                TextField(
-                                  autofocus: true,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.lightBlueAccent,
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.lightBlueAccent,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                RaisedButton(
-                                  color: Colors.lightBlueAccent,
-                                  onPressed: () {},
-                                  child: Text('Add',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 18,
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ));
+              builder: (context) => AddTaskScreen());
         },
       ),
     );
   }
 }
 
-class TaskTile extends StatefulWidget {
-  final title;
-
-  TaskTile({this.title});
+class TasksList extends StatefulWidget {
+  const TasksList();
 
   @override
-  _TaskTileState createState() => _TaskTileState();
+  _TasksListState createState() => _TasksListState();
 }
 
-class _TaskTileState extends State<TaskTile> {
-  bool isDone = false;
-
+class _TasksListState extends State<TasksList> {
+  List<Task> tasks = [
+    Task(title: 'Buy milk'),
+    Task(title: 'Buy eggs'),
+    Task(title: 'Buy bread'),
+  ];
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        widget.title,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-          decoration: isDone ? TextDecoration.lineThrough : null,
-        ),
+    return ListView.builder(
+      itemBuilder: (context, index) => TaskTile(
+        taskName: tasks[index].title,
+        isDone: tasks[index].isDone,
+        callback: (bool newState) => setState(() => tasks[index].toggleDone()),
       ),
-      trailing: Checkbox(
-        value: isDone,
-        onChanged: (newVal) => setState(() => isDone = newVal),
-      ),
+      itemCount: tasks.length,
     );
   }
 }
