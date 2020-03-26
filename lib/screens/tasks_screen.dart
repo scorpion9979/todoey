@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:todoey/modules/task.dart';
-import 'package:todoey/widgets/task_tile.dart';
 import 'package:todoey/screens/add_task_screen.dart';
+import 'package:todoey/widgets/task_list.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [
+    Task(title: 'Buy milk'),
+    Task(title: 'Buy eggs'),
+    Task(title: 'Buy bread'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +53,7 @@ class TasksScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '12 Tasks',
+                  '${tasks.length} Task${tasks.length > 1 ? 's' : ''}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -62,7 +73,11 @@ class TasksScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
-                child: TasksList(),
+                child: TasksList(
+                  tasks: tasks,
+                  callback: (index) =>
+                      setState(() => tasks[index].toggleDone()),
+                ),
               ),
             ),
           ),
@@ -78,35 +93,12 @@ class TasksScreen extends StatelessWidget {
           showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              builder: (context) => AddTaskScreen());
+              builder: (context) => AddTaskScreen(
+                    callback: (String newTask) =>
+                        setState(() => tasks.add(Task(title: newTask))),
+                  ));
         },
       ),
-    );
-  }
-}
-
-class TasksList extends StatefulWidget {
-  const TasksList();
-
-  @override
-  _TasksListState createState() => _TasksListState();
-}
-
-class _TasksListState extends State<TasksList> {
-  List<Task> tasks = [
-    Task(title: 'Buy milk'),
-    Task(title: 'Buy eggs'),
-    Task(title: 'Buy bread'),
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => TaskTile(
-        taskName: tasks[index].title,
-        isDone: tasks[index].isDone,
-        callback: (bool newState) => setState(() => tasks[index].toggleDone()),
-      ),
-      itemCount: tasks.length,
     );
   }
 }

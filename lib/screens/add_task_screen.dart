@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AddTaskScreen extends StatelessWidget {
+  final Function callback;
+  final TextEditingController controller = TextEditingController();
+
+  AddTaskScreen({this.callback});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -34,6 +39,7 @@ class AddTaskScreen extends StatelessWidget {
                     ),
                   ),
                   TextField(
+                    controller: controller,
                     autofocus: true,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
@@ -54,7 +60,12 @@ class AddTaskScreen extends StatelessWidget {
                   ),
                   RaisedButton(
                     color: Colors.lightBlueAccent,
-                    onPressed: () {},
+                    onPressed: () {
+                      if (controller.text.length > 0) {
+                        callback(controller.text);
+                        Navigator.pop(context);
+                      }
+                    },
                     child: Text('Add',
                         style: TextStyle(
                           color: Colors.white,
