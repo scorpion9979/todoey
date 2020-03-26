@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 const tasks = [
-  {'title': 'Buy milk', 'isDone': false},
-  {'title': 'Buy eggs', 'isDone': false},
-  {'title': 'Buy bread', 'isDone': true}
+  {'title': 'Buy milk'},
+  {'title': 'Buy eggs'},
+  {'title': 'Buy bread'}
 ];
 
 class TasksScreen extends StatelessWidget {
@@ -67,21 +67,8 @@ class TasksScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: ListView(
                   children: tasks
-                      .map((task) => ListTile(
-                            title: Text(
-                              task['title'],
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                                decoration: task['isDone']
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                              ),
-                            ),
-                            trailing: Checkbox(
-                              value: task['isDone'],
-                              onChanged: (newVal) => print(newVal),
-                            ),
+                      .map((task) => TaskTile(
+                            title: task['title'],
                           ))
                       .toList(),
                 ),
@@ -102,7 +89,8 @@ class TasksScreen extends StatelessWidget {
               isScrollControlled: true,
               builder: (context) => SingleChildScrollView(
                     child: Container(
-                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
                       child: Container(
                         color: Color(0xff757575),
                         child: Container(
@@ -166,6 +154,37 @@ class TasksScreen extends StatelessWidget {
                     ),
                   ));
         },
+      ),
+    );
+  }
+}
+
+class TaskTile extends StatefulWidget {
+  final title;
+
+  TaskTile({this.title});
+
+  @override
+  _TaskTileState createState() => _TaskTileState();
+}
+
+class _TaskTileState extends State<TaskTile> {
+  bool isDone = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        widget.title,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          decoration: isDone ? TextDecoration.lineThrough : null,
+        ),
+      ),
+      trailing: Checkbox(
+        value: isDone,
+        onChanged: (newVal) => setState(() => isDone = newVal),
       ),
     );
   }
