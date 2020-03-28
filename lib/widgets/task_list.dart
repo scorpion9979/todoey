@@ -12,7 +12,8 @@ class TasksList extends StatelessWidget {
           itemBuilder: (_, index) => TaskTile(
             taskName: taskData.tasks[index].title,
             isDone: taskData.tasks[index].isDone,
-            callback: (_) => taskData.toggleTask(taskData.tasks[index]),
+            toggleCallback: () => taskData.toggleTask(taskData.tasks[index]),
+            deleteCallback: () => taskData.removeTask(at: index),
           ),
           itemCount: taskData.taskCount,
         );

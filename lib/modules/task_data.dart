@@ -18,6 +18,11 @@ class TaskData with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeTask({int at}) {
+    _tasks.removeAt(at);
+    notifyListeners();
+  }
+
   void toggleTask(Task task) {
     task.toggleDone();
     notifyListeners();
